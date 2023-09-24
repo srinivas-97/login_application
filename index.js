@@ -4,9 +4,13 @@ const path = require("path");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 const bcrypt = require('bcrypt');
-const app = express();
+const cors = require("cors")
 
-app.use(express.json())
+const app = express();
+app.use(cors());
+
+app.use(express.json());
+app.use(express.urlencoded());
 
 const dbPath = path.join(__dirname, "user.db");
 
@@ -19,8 +23,8 @@ const initializeDBAndServer = async () => {
       driver: sqlite3.Database,
     });
     db.run("CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY, username TEXT NOT NULL, password TEXT NOT NULL, name TEXT NOT NULL, gender TEXT, location TEXT )");
-    app.listen(3004, () => {
-      console.log("Server Running at http://localhost:3004/");
+    app.listen(3007, () => {
+      console.log("Server Running at http://localhost:3007/");
     });
   } catch (e) {
     console.log(`DB Error: ${e.message}`);
@@ -65,6 +69,7 @@ app.get("/", (request, response) => {
 
   app.post("/login", async (request, response) => {
     const { username, password } = request.body;
+    console.log(request.body);
     const selectUserQuery = `SELECT * FROM user WHERE username = '${username}'`;
     const dbUser = await db.get(selectUserQuery);
     if (dbUser === undefined) {
