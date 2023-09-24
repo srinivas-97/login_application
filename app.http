@@ -1,0 +1,12 @@
+
+###
+POST http://localhost:3004/users
+Content-Type: "application/json"
+
+{
+    "username": "srinu", 
+    "name": "srinivas",
+    "password": "123",
+    "gender": "Male",
+    "location": "Hyderabad"
+}
